@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#define FIN 200 // Cantidad limite de numeros primos a encontrar
+#define FIN 100 // Cantidad limite de numeros primos a encontrar
 
 //Funciones auxiliares
 
@@ -44,33 +44,50 @@ int main(int argc, char *argv[]){
 	int inicio_impar = (rank * 2) + 1;
 	int step = size * 2;
 	int contador = 0;
+	int msg = 0;
 	int numero_primo = 0;
+	int aux, total, z;
 
 	if (rank == 0) { //Proceso master
-	
+		/*
 		printf("----------------------------------\n");//misc
 		printf("Total tasks: %d. Limit: %d\n", size, FIN);
-		printf("----------------------------------\n");//misc
+		printf("----------------------------------\n");//misc*/
 
 		contador = 4;
+		total = 0;
 
-		for (int z = inicio_impar; z <= FIN; z = z + step) {
+		for (z = inicio_impar; total < (FIN / size); z = z + step) {			
+
 			if (primo(z)) {
 				contador = contador + 1;
 				numero_primo = z;
+				total++;
 				printf("%d\n", numero_primo);
+				//ierr = MPI_Recv(&aux, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
+				//total = total + aux;
+				//ierr = MPI_Bcast(&total, 1, MPI_INT, 0, MPI_COMM_WORLD);
+				//printf("Aux: %d\n", aux);
 			}
 		}
+
+		//printf("Total: %d\n", total); 
 	
 	}
 
 	if (rank > 0) { //Procesos esclavos
 
-		for (int z = inicio_impar; z <= FIN; z = z + step) {
+		total = 0;
+
+		for (z = inicio_impar; total < (FIN / size); z = z + step) {
+			aux = 0;
 			if (primo(z)) {
 				contador = contador + 1;
 				numero_primo = z;
+				aux = 1;
+				total++;
 				printf("%d\n", numero_primo);
+				//ierr = MPI_Send(&aux, 1, MPI_INT, 0, 1, MPI_COMM_WORLD);
 			}
 		}
 
