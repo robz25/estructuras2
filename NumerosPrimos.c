@@ -2,7 +2,7 @@
 #include <math.h>
 #include <stdio.h>
 
-#define FIN 100 // Cantidad limite de numeros primos a encontrar
+#define FIN 500000 // Cantidad limite de numeros primos a encontrar
 
 //Funciones auxiliares
 
@@ -92,7 +92,11 @@ int main(int argc, char *argv[]){
 		}
 
 	}
-
+	
+	double tiempo_fin = MPI_Wtime();
+	double t = tiempo_fin - tiempo_inicio;
+	printf("Tiempo: %.2lf", t);
+	
 	MPI_Finalize();
 
 }
