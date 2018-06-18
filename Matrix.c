@@ -3,9 +3,9 @@
 #include <math.h>
 #include "mpi.h"
 
-#define filas_A 3
-#define columnas_A 5
-#define columnas_B 4
+#define filas_A 650
+#define columnas_A 180
+#define columnas_B 90
 
 int printMatrixC(double matrix[filas_A][columnas_B]) {
 
@@ -71,11 +71,6 @@ int main (int argc, char *argv[]) {
 
 		printMatrixC(MatrixC);
 
-		double tiempo_fin = MPI_Wtime();
-		double t = tiempo_fin - tiempo_inicio;
-		printf("Tiempo: %.2lf", t);
-
-
 	}
 
 	if (rank > 0) {// Procesos esclavos
@@ -101,6 +96,10 @@ int main (int argc, char *argv[]) {
 		MPI_Send(&MatrixC, filas * columnas_B, MPI_DOUBLE, 0, 789, MPI_COMM_WORLD);
 		
 	}
+
+	//double tiempo_fin = MPI_Wtime();
+	//double t = tiempo_fin - tiempo_inicio;
+	//printf("Tiempo: %.2lf", t);
 
 	MPI_Finalize();
 	return 0;
