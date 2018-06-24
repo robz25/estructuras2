@@ -6,8 +6,11 @@ NUM_PROC = 2
 
 MAKE_FOLDERS := $(shell mkdir -p $(DIRS))
 
+#ifeq($(MAKECMDGOALS:all%=%,$(NUM_PROC)))
+
 all: compile run
 	@echo "¡Listo!"
+	@echo  $(MAKECMDGOALS)
 #all: all8 all2 primosSec
 
 help:	
