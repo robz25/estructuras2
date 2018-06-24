@@ -1,9 +1,11 @@
-#include<stdio.h>
+#include <stdio.h>
 #include <mpi.h>
+#include <time.h>
  
 
 int completado[10], costo, res, rank, size;
-
+double iTime, fTime, tiempo;
+clock_t inicio, final;
 int ciudades = 8;
 int distancias[8][8] = {
 {0 , 115, 8 , 17 , 167, 26 ,83, 75},
@@ -63,19 +65,33 @@ void mincosto(int city)
  
 int main(int argc, char** argv)
 {
- 
+	inicio = clock();
+
+	printf("\n\nEl recorrido es:\n");
+	mincosto(0);
+	printf("\n\nLa distancia minima total es: %d\n ",costo);
+
+	final = clock();
+	tiempo = (double)(final - inicio)/CLOCKS_PER_SEC;
+	printf("Tiempo de ejecución secuencial: %f\n", tiempo);
+
+	inicio = clock();
+
 	MPI_Init(&argc, &argv);
+ 	iTime = MPI_Wtime();
 	MPI_Comm_rank(MPI_COMM_WORLD, &rank);
 	MPI_Comm_size(MPI_COMM_WORLD, &size);
 //	MPI_Send();
 //	MPI_Reccv();
 
-
-    printf("\n\nEl recorrido es:\n");
-    mincosto(0);
- 
-    printf("\n\nLa distancia minima total es: %d\n ",costo);
- 
+	fTime = MPI_Wtime();
+	fTime = fTime - iTime;
+	printf("Tiempo de ejecución: %f", fTime);
 	MPI_Finalize();
+
+	final = clock();
+	tiempo = (double)(final - inicio)/CLOCKS_PER_SEC;
+	printf("Tiempo de ejecución 'en paralelo': %f\n", tiempo);
+
     return 0;
 }

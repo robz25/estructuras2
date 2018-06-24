@@ -1,5 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
+//N procesos
+//f
 
 int main(int argc, char** argv)
 {

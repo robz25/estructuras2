@@ -2,7 +2,7 @@ CC1 = mpicc
 CC2 = mpiexec 
 
 DIRS = build/tarea build/laboratorio build/rTarea build/rLaboratorio
-NUM_PROC = 2
+NUM_PROC = 8
 
 MAKE_FOLDERS := $(shell mkdir -p $(DIRS))
 
@@ -25,11 +25,12 @@ compile: tarea lab
 
 run:
 	@echo "Ejecutando código..."
-#	@$(foreach exec, $(wildcard build/laboratorio/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
+#	@$(foreach exec, $(wildcard build/laboratorio/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)))
 #	@$(foreach exec, $(wildcard build/tarea/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec))) #mv build/**/*.exe build/)
-	@$(foreach exec, $(wildcard build/**/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)))
+	@$(foreach exec, $(wildcard build/**/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
 	@mv build/tarea/*txt build/rTarea/ ; mv build/laboratorio/*txt build/rLaboratorio/
 	@echo "Ejecución terminada."
+	@echo "_____________________"
 
 #all8: compilar
 #	$(CC2) -np 8 ./NumerosPrimos > test8.txt
@@ -65,13 +66,15 @@ run:
 
 tarea:
 	@echo "Compilando tarea 2..."
-	@$(foreach code, $(wildcard src/tarea/*.c), $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
+	@$(foreach code, $(wildcard src/tarea/*.c), echo $(subst src/tarea/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
 	@echo "Compilación terminada."
+	@echo "_____________________"
 
 lab:
 	@echo "Compilando ejercicios de laboratorio..."
-	@$(foreach code, $(wildcard src/laboratorio/*.c), $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
+	@$(foreach code, $(wildcard src/laboratorio/*.c), echo $(subst src/laboratorio/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
 	@echo "Compilación terminada."
+	@echo "_____________________"
 
 clean:
 	rm -R build/

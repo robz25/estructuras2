@@ -1,6 +1,7 @@
 #include <mpi.h>
 #include <stdio.h>
-
+//N procesos
+//f
 #define LIMIT 5
 
 int main(int argc, char** argv)
@@ -26,13 +27,14 @@ int main(int argc, char** argv)
 		}
 
 		ierr = MPI_Send(&buffer, 1, MPI_INT, (rank + 1) % size, 0, MPI_COMM_WORLD);		
-		printf("Message sent: %i. I am %d of %d\n", buffer, rank, size);
+		printf("Mensaje enviado: %i. Soy %d de %d\n", buffer, (rank+1), size);
 
 		if (rank == 0) {
     			ierr = MPI_Recv(&buffer, 1, MPI_INT, size - 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
-   			//printf("Hello, World. I am %d of %d\n", size, size);
-			
-		//}
+   			printf("Mensaje enviado: %i. Soy %d de %d\n", buffer, (rank+1), size);
+//		if(rank = size-1) ierr = MPI_Send(&buffer, 1, MPI_INT, 0, 0, MPI_COMM_WORLD);
+	
+	//}
 	}	
 
 
