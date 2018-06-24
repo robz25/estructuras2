@@ -1,33 +1,74 @@
-all: all8 all2 primosSec
+CC1 = mpicc
+CC2 = mpiexec 
 
-all8: compilar
-	mpiexec -np 8 ./NumerosPrimos > test8.txt
-	mpiexec -np 8 ./Matrix > matrix8.txt
+DIRS = build/tarea build/laboratorio build/rTarea build/rLaboratorio
+NUM_PROC = 2
 
-all2: compilar
-	mpiexec -np 2 ./NumerosPrimos > test2.txt
-	mpiexec -np 2 ./Matrix > matrix2.txt
+MAKE_FOLDERS := $(shell mkdir -p $(DIRS))
 
-compilar:
-	mpicc NumerosPrimos.c -o NumerosPrimos -lm
-	mpicc Matrix.c -o Matrix -lm	
+all: compile run
+	@echo "¡Listo!"
+#all: all8 all2 primosSec
 
-primosSec:
-	mpicc NumerosPrimos.c -o NumerosPrimos -lm
-	mpiexec -np 1 ./NumerosPrimos > primosSec.txt
+help:	
+	@echo "make : compila y ejecuta todo el proyecto \nmake tarea : compila y ejecuta solo tarea \nmake lab : compila y ejecuta solo laboratorio \nmake compile : compila todo el proyecto\nmake run : ejecuta todos los archivos compilados \nmake clean : borra carpetas con ejecutables y resultados" 
+#\nmake archivo : compila y ejecuta el archivo indicado
+#\nmake run archivo : ejecuta el archivo indicado
+	@echo "Archivos existentes:"
+	@$(foreach file, $(wildcard src/tarea/*.c), echo $(subst src/tarea/,,$(subst .c,,$(file)));)
+	@$(foreach file, $(wildcard src/laboratorio/*.c), echo $(subst src/laboratorio/,,$(subst .c,,$(file)));)
 
-primos2:
-	mpicc NumerosPrimos.c -o NumerosPrimos -lm
-	mpiexec -np 2 ./NumerosPrimos > primos2.txt
+compile: tarea lab
 
-primos8:
-	mpicc NumerosPrimos.c -o NumerosPrimos -lm
-	mpiexec -np 8 ./NumerosPrimos > primos8.txt
+run:
+	@echo "Ejecutando código..."
+#	@$(foreach exec, $(wildcard build/laboratorio/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
+#	@$(foreach exec, $(wildcard build/tarea/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec))) #mv build/**/*.exe build/)
+	@$(foreach exec, $(wildcard build/**/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)))
+	@mv build/tarea/*txt build/rTarea/ ; mv build/laboratorio/*txt build/rLaboratorio/
+	@echo "Ejecución terminada."
 
-matrix2:
-	mpicc Matrix.c -o Matrix -lm
-	mpiexec -np 2 ./Matrix > matrix2.txt
+#all8: compilar
+#	$(CC2) -np 8 ./NumerosPrimos > test8.txt
+#	$(CC2) -np 8 ./Matrix > matrix8.txt
 
-matrix8:
-	mpicc Matrix.c -o Matrix -lm
-	mpiexec -np 8 ./Matrix > matrix8.txt
+#all2: compilar
+#	$(CC2) -np 2 ./NumerosPrimos > test2.txt
+#	$(CC2) -np 2 ./Matrix > matrix2.txt
+
+#compilar:
+#	$(CC1) NumerosPrimos.c -o NumerosPrimos -lm
+#	$(CC1) Matrix.c -o Matrix -lm	
+
+#primosSec:
+#	$(CC1) NumerosPrimos.c -o build/NumerosPrimos -lm
+#	$(CC2) -np 1 ./NumerosPrimos > primosSec.txt
+
+#primos2:
+#	$(CC1) NumerosPrimos.c -o NumerosPrimos -lm
+#	$(CC2) -np 2 ./NumerosPrimos > primos2.txt
+
+#primos8:
+#	$(CC1) NumerosPrimos.c -o NumerosPrimos -lm
+#	$(CC2) -np 8 ./NumerosPrimos > primos8.txt
+
+#matrix2:
+#	$(CC1) Matrix.c -o Matrix -lm
+#	$(CC2) -np 2 ./Matrix > matrix2.txt
+
+#matrix8:
+#	$(CC1) Matrix.c -o Matrix -lm
+#	$(CC2) -np 8 ./Matrix > matrix8.txt
+
+tarea:
+	@echo "Compilando tarea 2..."
+	@$(foreach code, $(wildcard src/tarea/*.c), $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
+	@echo "Compilación terminada."
+
+lab:
+	@echo "Compilando ejercicios de laboratorio..."
+	@$(foreach code, $(wildcard src/laboratorio/*.c), $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
+	@echo "Compilación terminada."
+
+clean:
+	rm -R build/
