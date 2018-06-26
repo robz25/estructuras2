@@ -23,22 +23,28 @@ int main(int argc, char** argv)
 
 		if(rank == 0) {
 			ierr = MPI_Recv(&message, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+//			ierr = MPI_Send(&message,1, MPI_INT, 1, 0, MPI_COMM_WORLD);
 			printf("Soy el proceso %d y estoy recibiendo el número: %d\n", rank,message);
 			printf("Voy a enviar: %d + %d = %d\n", message,1, message+1);
 			message++;
 			ierr = MPI_Send(&message,1, MPI_INT, 1, 0, MPI_COMM_WORLD);
-		}
-		else{
+//			ierr = MPI_Recv(&message, 1, MPI_INT, 1, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
+			}
+		if(rank == 1){
 			ierr = MPI_Recv(&message, 1, MPI_INT, 0, 0, MPI_COMM_WORLD, MPI_STATUS_IGNORE);
 			printf("Soy el proceso %d y estoy recibiendo el número: %d\n", rank,message);
 			printf("Voy a enviar: %d + %d = %d\n", message,1, message+1);
 			message++;
 			ierr = MPI_Send(&message,1, MPI_INT, 0, 0, MPI_COMM_WORLD);
 		}
+		if(rank > 1){
+			message = 21;
+		}
+	//	printf(" ");
 	}
 
-//	ierr = MPI_Finalize();
-	ierr = MPI_Abort(MPI_COMM_WORLD, 0);
+	ierr = MPI_Finalize();
+//	ierr = MPI_Abort(MPI_COMM_WORLD, 0);
 	return 0;
 }
 

@@ -66,13 +66,13 @@ run:
 
 tarea:
 	@echo "Compilando tarea 2..."
-	@$(foreach code, $(wildcard src/tarea/*.c), echo $(subst src/tarea/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
+	@$(foreach code, $(wildcard src/tarea/*.c), echo $(subst src/tarea/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code))) -lm ;)
 	@echo "Compilación terminada."
 	@echo "_____________________"
 
 lab:
 	@echo "Compilando ejercicios de laboratorio..."
-	@$(foreach code, $(wildcard src/laboratorio/*.c), echo $(subst src/laboratorio/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code)));)
+	@$(foreach code, $(wildcard src/laboratorio/*.c), echo $(subst src/laboratorio/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code))) -lm ;)
 	@echo "Compilación terminada."
 	@echo "_____________________"
 
