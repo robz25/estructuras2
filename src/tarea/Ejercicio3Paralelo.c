@@ -35,10 +35,6 @@ int main(int argc, char *argv[]){
 	int aux, total, z;
 
 	if (rank == 0) { //Proceso master
-		/*
-		printf("----------------------------------\n");//misc
-		printf("Total tasks: %d. Limit: %d\n", size, FIN);
-		printf("----------------------------------\n");//misc*/
 
 		contador = 4;
 		total = 0;
@@ -50,14 +46,10 @@ int main(int argc, char *argv[]){
 				numero_primo = z;
 				total++;
 				printf("%d\n", numero_primo);
-				//ierr = MPI_Recv(&aux, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-				//total = total + aux;
-				//ierr = MPI_Bcast(&total, 1, MPI_INT, 0, MPI_COMM_WORLD);
-				//printf("Aux: %d\n", aux);
+
 			}
 		}
 
-		//printf("Total: %d\n", total); 
 	
 	}
 
@@ -73,7 +65,6 @@ int main(int argc, char *argv[]){
 				aux = 1;
 				total++;
 				printf("%d\n", numero_primo);
-				//ierr = MPI_Send(&aux, 1, MPI_INT, 0, 1, MPI_COMM_WORLD);
 			}
 		}
 
