@@ -13,7 +13,7 @@ all: compile run
 #	@echo  $(MAKECMDGOALS)
 
 help:	
-	@echo "make : compila y ejecuta todo el proyecto \nmake tarea : compila y ejecuta solo tarea \nmake lab : compila y ejecuta solo laboratorio \nmake compile : compila todo el proyecto\nmake run : ejecuta todos los archivos compilados \nmake clean : borra carpetas con ejecutables y resultados" 
+	@echo "make : compila y ejecuta todo el proyecto \nmake tarea : compila solo tarea \nmake lab : compila solo laboratorio  \nmake runt : ejecuta archivos compilados de tarea \nmake runl : ejecuta archivos compilados de laboratorio \nmake compile : compila todo el proyecto\nmake run : ejecuta todos los archivos compilados \nmake clean : borra carpetas con ejecutables y resultados" 
 #\nmake archivo : compila y ejecuta el archivo indicado
 #\nmake run archivo : ejecuta el archivo indicado
 	@echo "Archivos existentes:"
@@ -22,24 +22,26 @@ help:
 
 compile: tarea lab
 
-run:
-	@echo "Ejecutando código..."
+run:	runt runl
+#	@echo "Ejecutando código..."
 #	@$(foreach exec, $(wildcard build/laboratorio/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)))
 #	@$(foreach exec, $(wildcard build/tarea/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec))) #mv build/**/*.exe build/)
-	@$(foreach exec, $(wildcard build/**/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
+#	@$(foreach exec, $(wildcard build/**/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
 #	@$(foreach output, $(wildcard build/tarea/*.txt), echo mv $(output) $(subst tarea,resultadosTarea,$(output));)
 #	@$(foreach output, $(wildcard build/laboratorio/*.txt), echo mv $(output) $(subst laboratorio,resultadosLaboratorio,$(output));)
-	@mv build/tarea/*txt build/resultadosTarea/ ; mv build/laboratorio/*txt build/resultadosLaboratorio/
-	@echo "Ejecución terminada."
-	@echo "_____________________"
+#	@mv build/tarea/*txt build/resultadosTarea/ ; mv build/laboratorio/*txt build/resultadosLaboratorio/
+#	@echo "Ejecución terminada."
+#	@echo "_____________________"
 
 runt:
-	@$(foreach exec, $(wildcard build/tarea/*.exe), time echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)) > tiempo$(exec).txt;)
+	@echo "Ejecutando tarea..."
+	@$(foreach exec, $(wildcard build/tarea/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
 	@mv build/tarea/*txt build/resultadosTarea/
 	@echo "Ejecución terminada."
 	@echo "_____________________"
 
 runl:
+	@echo "Ejecutando laboratorio..."
 	@$(foreach exec, $(wildcard build/laboratorio/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
 #	@$(foreach exec, $(wildcard build/laboratorio/*.exe), echo time $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec)  > $(subst laboratorio/,tiempos,$(subst .exe,Tiempo.txt,$(exec)));)
 	@mv build/laboratorio/*txt build/resultadosLaboratorio/
