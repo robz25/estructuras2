@@ -33,6 +33,19 @@ run:
 	@echo "Ejecución terminada."
 	@echo "_____________________"
 
+runt:
+	@$(foreach exec, $(wildcard build/tarea/*.exe), time echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)) > tiempo$(exec).txt;)
+	@mv build/tarea/*txt build/resultadosTarea/
+	@echo "Ejecución terminada."
+	@echo "_____________________"
+
+runl:
+	@$(foreach exec, $(wildcard build/laboratorio/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
+#	@$(foreach exec, $(wildcard build/laboratorio/*.exe), echo time $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec)  > $(subst laboratorio/,tiempos,$(subst .exe,Tiempo.txt,$(exec)));)
+	@mv build/laboratorio/*txt build/resultadosLaboratorio/
+	@echo "Ejecución terminada."
+	@echo "_____________________"
+
 tarea:
 	@echo "Compilando tarea 2..."
 	@$(foreach code, $(wildcard src/tarea/*.c), echo $(subst src/tarea/,,$(code)); $(CC1) $(code) -o $(subst src, build,$(subst .c,.exe,$(code))) -lm ;)
