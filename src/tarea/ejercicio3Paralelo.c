@@ -6,28 +6,14 @@
 
 //Funciones auxiliares
 
-int primo(int n) {// Calcula si es primo
-
-	if (n > 0) {
-	
-		int raiz = (int) sqrt(n);
-
-		for (int i = 3; i <= raiz; i = i+2)
-
-			if ((n % i) == 0)
-	
-				return 0;
-
-			return 1;
-
-	}
-
-	else {
-
+int primo(int num)
+{	
+	if (num % 2 == 0)
 		return 0;
-
-	}
-
+	for (int i = 3; i < sqrt(num); i += 2)
+		if (num % i == 0)
+			return 0;
+	return 1;
 }
 
 int main(int argc, char *argv[]){
@@ -49,10 +35,6 @@ int main(int argc, char *argv[]){
 	int aux, total, z;
 
 	if (rank == 0) { //Proceso master
-		/*
-		printf("----------------------------------\n");//misc
-		printf("Total tasks: %d. Limit: %d\n", size, FIN);
-		printf("----------------------------------\n");//misc*/
 
 		contador = 4;
 		total = 0;
@@ -64,14 +46,10 @@ int main(int argc, char *argv[]){
 				numero_primo = z;
 				total++;
 				printf("%d\n", numero_primo);
-				//ierr = MPI_Recv(&aux, 1, MPI_INT, MPI_ANY_SOURCE, MPI_ANY_TAG, MPI_COMM_WORLD, &status);
-				//total = total + aux;
-				//ierr = MPI_Bcast(&total, 1, MPI_INT, 0, MPI_COMM_WORLD);
-				//printf("Aux: %d\n", aux);
+
 			}
 		}
 
-		//printf("Total: %d\n", total); 
 	
 	}
 
@@ -87,7 +65,6 @@ int main(int argc, char *argv[]){
 				aux = 1;
 				total++;
 				printf("%d\n", numero_primo);
-				//ierr = MPI_Send(&aux, 1, MPI_INT, 0, 1, MPI_COMM_WORLD);
 			}
 		}
 
@@ -95,7 +72,7 @@ int main(int argc, char *argv[]){
 	
 	double tiempo_fin = MPI_Wtime();
 	double t = tiempo_fin - tiempo_inicio;
-	printf("Tiempo: %.2lf", t);
+	printf("Tiempo: %.2lf\n", t);
 	
 	MPI_Finalize();
 

@@ -5,33 +5,30 @@ DIRS = build/tarea build/laboratorio build/resultadosTarea build/resultadosLabor
 NUM_PROC = 8
 
 MAKE_FOLDERS := $(shell mkdir -p $(DIRS))
-
+SOURCE := $(MAKECMDGOALS:files%=%)
+#MAKECMDGOALS = 
 #ifeq($(MAKECMDGOALS:all%=%,$(NUM_PROC)))
 
 all: compile run
 	@echo "¡Listo!"
-#	@echo  $(MAKECMDGOALS)
+#	@echo  $(MAKECMDGOALS:all%=%)
+
+#ifeq ($(MAKECMDGOALS:files%=%),$(SOURCE))
+#	$(MAKECMDGOALS) := 
+#	$(files)
+#	@echo "Fuentes: $(SOURCE)"
+#endif
 
 help:	
 	@echo "make : compila y ejecuta todo el proyecto \nmake tarea : compila solo tarea \nmake lab : compila solo laboratorio  \nmake runt : ejecuta archivos compilados de tarea \nmake runl : ejecuta archivos compilados de laboratorio \nmake compile : compila todo el proyecto\nmake run : ejecuta todos los archivos compilados \nmake clean : borra carpetas con ejecutables y resultados" 
 #\nmake archivo : compila y ejecuta el archivo indicado
 #\nmake run archivo : ejecuta el archivo indicado
 	@echo "Archivos existentes:"
-	@$(foreach file, $(wildcard src/tarea/*.c), echo $(subst src/tarea/,,$(subst .c,,$(file)));)
-	@$(foreach file, $(wildcard src/laboratorio/*.c), echo $(subst src/laboratorio/,,$(subst .c,,$(file)));)
+	@$(foreach file, $(wildcard src/**/*.c), echo $(subst .c,,$(notdir $(file)));)
 
 compile: tarea lab
 
 run:	runt runl
-#	@echo "Ejecutando código..."
-#	@$(foreach exec, $(wildcard build/laboratorio/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec)))
-#	@$(foreach exec, $(wildcard build/tarea/*.exe), $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec))) #mv build/**/*.exe build/)
-#	@$(foreach exec, $(wildcard build/**/*.exe), echo $(subst build/,,$(exec)); $(CC2) -np $(NUM_PROC) ./$(exec) > $(subst .exe,Np$(NUM_PROC)Out.txt,$(exec));)
-#	@$(foreach output, $(wildcard build/tarea/*.txt), echo mv $(output) $(subst tarea,resultadosTarea,$(output));)
-#	@$(foreach output, $(wildcard build/laboratorio/*.txt), echo mv $(output) $(subst laboratorio,resultadosLaboratorio,$(output));)
-#	@mv build/tarea/*txt build/resultadosTarea/ ; mv build/laboratorio/*txt build/resultadosLaboratorio/
-#	@echo "Ejecución terminada."
-#	@echo "_____________________"
 
 runt:
 	@echo "Ejecutando tarea..."
@@ -47,6 +44,7 @@ runl:
 	@mv build/laboratorio/*txt build/resultadosLaboratorio/
 	@echo "Ejecución terminada."
 	@echo "_____________________"
+	@echo  $(MAKECMDGOALS:runl%=%)
 
 tarea:
 	@echo "Compilando tarea 2..."
