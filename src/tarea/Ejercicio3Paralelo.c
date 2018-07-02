@@ -29,7 +29,6 @@ int main(int argc, char *argv[]){
 	double tiempo_inicio = MPI_Wtime();
 	int inicio_impar = (rank * 2) + 1;
 	int step = size * 2;
-	int contador = 0;
 	int msg = 0;
 	int numero_primo = 0;
 	int aux, total, z;
@@ -42,7 +41,6 @@ int main(int argc, char *argv[]){
 		for (z = inicio_impar; total < (FIN / size); z = z + step) {			
 
 			if (primo(z)) {
-				contador = contador + 1;
 				numero_primo = z;
 				total++;
 				printf("%d\n", numero_primo);
@@ -60,7 +58,6 @@ int main(int argc, char *argv[]){
 		for (z = inicio_impar; total < (FIN / size); z = z + step) {
 			aux = 0;
 			if (primo(z)) {
-				contador = contador + 1;
 				numero_primo = z;
 				aux = 1;
 				total++;
