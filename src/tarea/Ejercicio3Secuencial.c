@@ -23,7 +23,6 @@ int main(int argc, char *argv[]){
 	//double tiempo_inicio = MPI_Wtime();
 	int inicio_impar = 1;
 	int step = 1;
-	int contador = 0;
 	int msg = 0;
 	int numero_primo = 0;
 	int aux, total, z;
@@ -35,7 +34,6 @@ int main(int argc, char *argv[]){
 	for (z = inicio_impar; total < FIN; z = z + step) {			
 
 		if (primo(z)) {
-			contador = contador + 1;
 			numero_primo = z;
 			total++;
 			printf("%d\n", numero_primo);
