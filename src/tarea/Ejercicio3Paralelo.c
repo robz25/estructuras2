@@ -34,8 +34,7 @@ int main(int argc, char *argv[]){
 	int aux, total, z;
 
 	if (rank == 0) { //Proceso master
-
-		contador = 4;
+		
 		total = 0;
 
 		for (z = inicio_impar; total < (FIN / size); z = z + step) {			
