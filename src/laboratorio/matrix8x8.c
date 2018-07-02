@@ -3,9 +3,9 @@
 #include <math.h>
 #include "mpi.h"
 
-#define filas_A 124
-#define columnas_A 30
-#define columnas_B 14
+#define filas_A 8
+#define columnas_A 8
+#define columnas_B 1
 
 int printMatrixC(double matrix[filas_A][columnas_B]) {
 
